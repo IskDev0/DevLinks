@@ -1,3 +1,4 @@
 <template>
+  <MainHeader/>
   <slot/>
 </template>

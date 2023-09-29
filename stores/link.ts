@@ -25,7 +25,11 @@ export const useLinkStore = defineStore("links", () => {
         }
     }
 
+    const filledLinks = ref<LinkItemType[]>([])
+
+    const showError = ref<boolean>(false)
+
     return {
-        links, platformsList, deleteItem
+        links, platformsList, deleteItem, filledLinks, showError
     }
 })
