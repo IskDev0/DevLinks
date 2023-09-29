@@ -2,10 +2,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
     const user = useSupabaseUser()
 
-    if (to.path === "/" && !user.value) {
-        return navigateTo('/register');
-    }
-
     if (to.path === "/" && user.value) {
         return navigateTo('/links');
     }
@@ -14,5 +10,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         return navigateTo('/register');
     }
 
+    if ((to.path === "/register" || to.path === "/login") && user.value) {
+        return navigateTo('/links');
+    }
 
 })
