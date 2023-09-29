@@ -4,7 +4,8 @@ export default defineNuxtConfig({
       "@pinia/nuxt",
       "@nuxtjs/tailwindcss",
       "nuxt-headlessui",
-      "@nuxtjs/supabase"
+      "@nuxtjs/supabase",
+      "nuxt-icon"
   ],
     supabase: {
         redirect: false
