@@ -10,7 +10,7 @@ function addLinks (): void {
   const availablePlatforms = getAvailablePlatforms();
 
   if (availablePlatforms.length > 0) {
-    links.value.push({id: links.value.length + 1, platform: availablePlatforms[0], link: ''});
+    links.value.push({id: links.value.length + 1, platform: availablePlatforms[0], href: ''});
   }
 }
 
@@ -22,10 +22,10 @@ function getAvailablePlatforms (): string[] {
 
 <template>
   <section class="container mx-auto mt-10">
-    <div class="flex items-start">
-    <div class="w-1/3">
+    <div class="flex items-start gap-24">
+      <div class="w-1/3 h-screen">
       <LinksPreview :links="links"/>
-    </div>
+      </div>
     <div class="w-2/3 bg-white py-8 px-6 rounded-xl">
       <h1 class="text-3xl font-bold">Customize your links</h1>
       <p class="text-gray-500 pt-4 pb-8">Add/edit/remove links below and then share all your profiles with the

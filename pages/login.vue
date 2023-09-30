@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import {useSupabaseClient} from "#imports";
 
+definePageMeta({
+  layout: "NoHeader"
+})
+
 const showPassword = ref<boolean>(false)
 const showConfirmPassword = ref<boolean>(false)
 
