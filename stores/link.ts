@@ -6,7 +6,7 @@ export const useLinkStore = defineStore("links", () => {
     const links = ref<LinkItemType[]>([
         {
             id: 1,
-            href: "https://github.com",
+            href: "",
             platform: "GitHub"
         }
     ])

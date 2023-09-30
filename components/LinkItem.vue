@@ -4,15 +4,21 @@ import {useLinkStore} from "@/stores/link";
 import {Listbox, ListboxButton, ListboxOption, ListboxOptions,} from '@headlessui/vue'
 import type LinkItemType from "@/utils/types/linkItemType";
 import {storeToRefs} from "pinia";
+import {useSupabaseClient} from "#imports";
+import Database from "~/utils/types/database";
+
+import { defineProps } from 'vue';
 
 const props = defineProps({
   link: {
-    type: Object as PropType<LinkItemType>
+    type: Object as PropType<LinkItemType>,
+    required: true // Делаем link обязательным
   },
   index: {
     type: Number
   }
-})
+});
+
 
 const linkStore = useLinkStore()
 
@@ -24,7 +30,7 @@ const platforms = computed(() => {
 });
 
 const placeholderText = computed(() => {
-  const platformsMap = {
+  const platformsMap:any = {
     GitHub: "https://github.com/",
     GitLab: "https://gitlab.com/",
     Youtube: "https://youtube.com/",
@@ -35,6 +41,25 @@ const placeholderText = computed(() => {
   return platformsMap[props.link.platform]
 });
 
+const user = useSupabaseUser()
+const supabase = useSupabaseClient<Database>()
+
+async function deleteItem(index: number): Promise<void> {
+
+  const platform = links.value[index].platform;
+
+  const updateData: { [platform: string]: null } = {};
+
+  updateData[platform.toLowerCase()] = null;
+
+  const {data, error} = await supabase
+      .from('links')
+      .update(updateData)
+      .eq('userId', user.value?.id)
+      .select();
+
+  linkStore.deleteItem(index)
+}
 
 </script>
 
@@ -44,7 +69,7 @@ const placeholderText = computed(() => {
       <div class="relative mt-1">
         <div class="flex items-center justify-between mb-4">
           <h1 class="text-gray-400 font-semibold text-xl">Link #{{ index + 1 }}</h1>
-          <button @click="linkStore.deleteItem(<number>index)" class="text-gray-400 text-lg">Remove</button>
+          <button @click="deleteItem(<number>index)" class="text-gray-400 text-lg">Remove</button>
         </div>
         <ListboxButton
             class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-600 sm:text-sm"

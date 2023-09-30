@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import {useUserStore} from "~/stores/user";
 import {storeToRefs} from "pinia";
+import {useSupabaseClient} from "#imports";
 
 const userStore = useUserStore()
+const supabase = useSupabaseClient()
 
 const {firstName, lastName, image, email} = storeToRefs(userStore)
 const selectFile = (e:any) => {

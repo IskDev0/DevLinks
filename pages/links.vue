@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import {useLinkStore} from "~/stores/link";
 import {storeToRefs} from "pinia";
-import LinksPreview from "~/components/LinksPreview.vue";
+import {useSupabaseUser} from "#imports";
+import Database from "~/utils/types/database";
+import LinkItemType from "~/utils/types/linkItemType";
+
+const router = useRouter()
+
+const supabase = useSupabaseClient<Database>()
+const user = useSupabaseUser()
+
 const linkStore = useLinkStore()
 
-const {links, platformsList} = storeToRefs(linkStore)
+const {links, platformsList, filledLinks, showError} = storeToRefs(linkStore)
 
 function addLinks (): void {
   const availablePlatforms = getAvailablePlatforms();
@@ -18,6 +26,82 @@ function getAvailablePlatforms (): string[] {
   const allPlatforms = linkStore.links.map(link => link.platform);
   return platformsList.value.filter(platform => !allPlatforms.includes(platform));
 }
+
+async function uploadUserLinks(): Promise<void> {
+  const { data: existingData, error } = await fetchUserLinks();
+
+  const filledLinksValue = filterFilledLinks(links.value);
+
+  if (filledLinksValue.length === links.value.length) {
+    if (existingData?.length === 0) {
+      await insertUserLinks();
+    } else {
+      await updateUserLinks();
+    }
+  } else {
+    showError.value = true;
+  }
+}
+
+async function fetchUserLinks() {
+  return supabase
+      .from('links')
+      .select('*')
+      .eq('userId', user.value?.id);
+}
+
+function filterFilledLinks(linksValue: LinkItemType[]): LinkItemType[] {
+  return linksValue.filter(link => link.href.trim() !== "");
+}
+
+async function insertUserLinks(): Promise<void> {
+  const linkData = {
+    "github": getLinkByPlatform("GitHub"),
+    "gitlab": getLinkByPlatform("GitLab"),
+    "linkedin": getLinkByPlatform("LinkedIn"),
+    "twitter": getLinkByPlatform("Twitter"),
+    "youtube": getLinkByPlatform("Youtube"),
+    "userId": user.value?.id
+  };
+
+  const { data, error } = await supabase
+      .from('links')
+      .insert([linkData]);
+
+  if (error) {
+    throw error;
+  }
+
+  await router.push("/profile");
+}
+
+async function updateUserLinks() {
+  const linkData = {
+    "github": getLinkByPlatform("GitHub"),
+    "gitlab": getLinkByPlatform("GitLab"),
+    "linkedin": getLinkByPlatform("LinkedIn"),
+    "twitter": getLinkByPlatform("Twitter"),
+    "youtube": getLinkByPlatform("Youtube"),
+  };
+
+  const { data, error } = await supabase
+      .from('links')
+      .update(linkData)
+      .eq('userId', user.value?.id)
+      .select();
+
+  await router.push("/profile");
+}
+
+function getLinkByPlatform(platform: string): string | undefined {
+  return links.value.find(link => link.platform === platform)?.href;
+}
+
+
+function closeError():void{
+  showError.value = false
+}
+
 </script>
 
 <template>
@@ -34,7 +118,11 @@ function getAvailablePlatforms (): string[] {
               class="w-full py-2 px-4 border-2 border-purple-700 text-purple-700 font-bold rounded-lg">+ Add new link
       </button>
       <LinksList :links="links"/>
+      <div class="flex justify-end">
+      <button @click="uploadUserLinks" class="mt-10 text-white bg-purple-700 py-2 px-6 rounded-lg text-lg self-end">Save</button>
+      </div>
     </div>
     </div>
   </section>
+  <ErrorMessage @close="closeError" v-if="showError" />
 </template>

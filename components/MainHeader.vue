@@ -8,7 +8,7 @@ const linkStore = useLinkStore();
 const {links, filledLinks, showError} = storeToRefs(linkStore);
 
 function showPreview(): void {
-  filledLinks.value = links.value.filter(link => link.link.trim() !== "")
+  filledLinks.value = links.value.filter(link => link.href.trim() !== "")
   showError.value = false
   if (links.value.length === filledLinks.value.length) {
     router.push("/preview")
