@@ -30,7 +30,7 @@ defineProps({
         <div class="flex flex-col items-center absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 w-[calc(100%-50px)]">
           <img
               class="rounded-full w-32 h-32 mb-8"
-              :src="image"
+              :src="image ? image : '/placeholder.png'"
               alt="profile"
           >
           <div class="flex flex-col items-center">
