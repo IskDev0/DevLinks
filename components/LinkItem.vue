@@ -50,7 +50,7 @@ async function deleteItem(index: number): Promise<void> {
 
   const updateData: { [platform: string]: null } = {};
 
-  updateData[platform.toLowerCase()] = null;
+  updateData[platform] = null;
 
   const {data, error} = await supabase
       .from('links')
