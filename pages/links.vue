@@ -4,6 +4,7 @@ import {storeToRefs} from "pinia";
 import {useSupabaseUser} from "#imports";
 import Database from "~/utils/types/database";
 import LinkItemType from "~/utils/types/linkItemType";
+import loadUserPreviousLinks from "~/utils/loadUserPreviousLinks";
 
 const router = useRouter()
 
@@ -105,38 +106,9 @@ function closeError(): void {
   showError.value = false
 }
 
-async function getUserPreviousLinks() {
-  const {data, error} = await
-      supabase
-          .from("links")
-          .select("GitHub, GitLab, LinkedIn, Twitter, Youtube")
-          .eq("userId", user.value?.id)
-          .single()
 
-  if (error) {
-    throw error;
-  }else {
-    return data
-  }
-}
-
-onMounted(async ():Promise<void> => {
-  let previousData = await getUserPreviousLinks()
-
-  if (previousData !== null) {
-    let currentId = 1;
-    const outputArray = Object.entries(previousData)
-        .filter(([key, value]) => value !== null)
-        .map(([key, value], index) => ({
-          id: currentId + index,
-          href: value,
-          platform: key
-        }));
-
-    links.value = outputArray
-  } else {
-    links.value = []
-  }
+onMounted(() => {
+  loadUserPreviousLinks()
 })
 
 

@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import {useSupabaseClient} from "#imports";
+import Database from "~/utils/types/database";
 
 definePageMeta({
   layout: "NoHeader"
 })
 
 const showPassword = ref<boolean>(false)
-const showConfirmPassword = ref<boolean>(false)
 
 const email = ref<string>()
 const password = ref<string>()
-const confirmPassword = ref<string>()
 
 const router = useRouter()
 const supabase = useSupabaseClient<Database>()

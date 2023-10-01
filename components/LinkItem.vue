@@ -12,7 +12,7 @@ import { defineProps } from 'vue';
 const props = defineProps({
   link: {
     type: Object as PropType<LinkItemType>,
-    required: true // Делаем link обязательным
+    required: true
   },
   index: {
     type: Number
@@ -52,13 +52,14 @@ async function deleteItem(index: number): Promise<void> {
 
   updateData[platform] = null;
 
+  linkStore.deleteItem(index)
+
   const {data, error} = await supabase
       .from('links')
       .update(updateData)
       .eq('userId', user.value?.id)
       .select();
 
-  linkStore.deleteItem(index)
 }
 
 </script>
