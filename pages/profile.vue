@@ -2,6 +2,7 @@
 import {useLinkStore} from "~/stores/link";
 import {storeToRefs} from "pinia";
 import loadUserPreviousLinks from "~/utils/loadUserPreviousLinks";
+import loadUserPreviousDetails from "~/utils/loadUserPreviousDetails";
 
 const linkStore = useLinkStore();
 
@@ -9,6 +10,7 @@ const {links} = storeToRefs(linkStore)
 
 onMounted(() => {
   loadUserPreviousLinks()
+  loadUserPreviousDetails()
 })
 </script>
 
