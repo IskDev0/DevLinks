@@ -1,16 +1,16 @@
 const linkImage = (link: { platform: string }): string | undefined => {
 
     if (link.platform === 'GitHub') {
-        return 'github.svg'
+        return '../github.svg'
     } else if (link.platform === 'Youtube') {
-        return 'youtube.svg'
+        return '../youtube.svg'
     } else if (link.platform === 'LinkedIn') {
-        return 'linkedin.svg'
+        return '../linkedin.svg'
     } else if (link.platform === 'Twitter') {
-        return 'twitter.svg'
+        return '../twitter.svg'
     }
     else if (link.platform === 'GitLab') {
-        return 'gitlab.svg'
+        return '../gitlab.svg'
     }
 }
 

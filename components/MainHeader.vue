@@ -3,6 +3,7 @@ import {useLinkStore} from "@/stores/link";
 import {storeToRefs} from "pinia";
 import {useRouter} from "vue-router";
 
+const user = useSupabaseUser()
 const router = useRouter()
 const linkStore = useLinkStore();
 const {links, filledLinks, showError} = storeToRefs(linkStore);
@@ -11,7 +12,7 @@ function showPreview(): void {
   filledLinks.value = links.value.filter(link => link.href.trim() !== "")
   showError.value = false
   if (links.value.length === filledLinks.value.length) {
-    router.push("/preview")
+    router.push(`/preview/${user.value?.id}`)
   } else {
     showError.value = true
   }
