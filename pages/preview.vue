@@ -19,7 +19,7 @@ onMounted(() => {
   loadUserPreviousDetails()
 })
 
-async function copyLink(){
+async function copyLink() {
   await navigator.clipboard.writeText(`${window.location.origin}/share/${user.value?.id}`)
 }
 </script>

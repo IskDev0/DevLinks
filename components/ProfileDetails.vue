@@ -133,8 +133,7 @@ const imagePreview = computed(() => {
               type="text" placeholder="john.smith@gmail.com" id="email"></label>
         </form>
       </div>
-      <button @click="uploadUserDetails" class="text-white bg-purple-700 py-2 px-6 rounded-lg text-lg self-end">Save
-      </button>
+      <button @click="uploadUserDetails" class="text-white bg-purple-700 py-2 px-6 rounded-lg text-lg self-end">Save</button>
     </div>
   </div>
 </template>

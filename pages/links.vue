@@ -30,7 +30,9 @@ function getAvailablePlatforms(): string[] {
 
 async function uploadUserLinks(): Promise<void> {
 
-  const {data: existingData, error} = await fetchUserLinks();
+  const existingData = await fetchUserLinks();
+
+  console.log(existingData)
 
   const filledLinksValue = filterFilledLinks(links.value);
 
@@ -51,7 +53,11 @@ async function fetchUserLinks() {
       .select('*')
       .eq('userId', user.value?.id)
 
-  return data
+  if (data !== null) {
+    return data
+  } else {
+    return null
+  }
 }
 
 function filterFilledLinks(linksValue: LinkItemType[]): LinkItemType[] {
@@ -109,6 +115,7 @@ function closeError(): void {
 
 onMounted(() => {
   loadUserPreviousLinks()
+  loadUserPreviousDetails()
 })
 
 
