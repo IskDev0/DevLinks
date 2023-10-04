@@ -12,7 +12,7 @@ function showPreview(): void {
   filledLinks.value = links.value.filter(link => link.href.trim() !== "")
   showError.value = false
   if (links.value.length === filledLinks.value.length) {
-    router.push(`/preview/${user.value?.id}`)
+    router.push("/preview")
   } else {
     showError.value = true
   }

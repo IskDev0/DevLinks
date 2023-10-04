@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {useLinkStore} from "~/stores/link";
 import {useUserStore} from "~/stores/user";
+import Database from "~/utils/types/database";
 import {storeToRefs} from "pinia";
 import linkColor from "~/utils/linkColor";
 
@@ -8,29 +9,64 @@ definePageMeta({
   layout: "NoHeader"
 })
 
-const linkStore = useLinkStore();
-const userStore = useUserStore();
-const user = useSupabaseUser()
-const {firstName, lastName, image, email} = storeToRefs(userStore)
+const supabase = useSupabaseClient<Database>()
+const route = useRoute()
+
+const linkStore = useLinkStore()
+const userStore = useUserStore()
+
 const {links} = storeToRefs(linkStore)
+const {firstName, lastName, image, email} = storeToRefs(userStore)
+
+// eeb9a147-3279-47a1-8c1c-0c01fbd41c60
+
+
+async function loadCurrentUserLinks(): Promise<void> {
+  const {data, error} = await supabase
+      .from('links')
+      .select('GitHub, GitLab, LinkedIn, Twitter, Youtube')
+      .eq('userId', route.params.id)
+      .single()
+
+  links.value = data
+
+  if (data !== null) {
+    let currentId = 1;
+    const outputArray = Object.entries(data)
+        .filter(([key, value]) => value !== null)
+        .map(([key, value], index) => ({
+          id: currentId + index,
+          href: value,
+          platform: key
+        }));
+
+    links.value = outputArray
+  } else {
+    links.value = []
+  }
+}
+
+async function loadCurrentUserDetails(): Promise<void> {
+  const {data, error} = await supabase
+      .from('userDetails')
+      .select('*')
+      .eq('userId', route.params.id)
+      .single()
+
+  firstName.value = data.firstName
+  lastName.value = data.lastName
+  image.value = data.image
+  email.value = data.email
+}
 
 onMounted(() => {
-  loadUserPreviousLinks()
-  loadUserPreviousDetails()
+  loadCurrentUserLinks()
+  loadCurrentUserDetails()
 })
 
-async function copyLink(){
-  await navigator.clipboard.writeText(`${window.location.origin}/share/${user.value?.id}`)
-}
 </script>
 
 <template>
-  <header class="flex items-center justify-between bg-white p-4 m-4 rounded-xl">
-    <RouterLink class="py-2 px-4 border-2 border-violet-700 rounded-lg font-bold text-violet-700" to="/links">Back to
-      Editor
-    </RouterLink>
-    <button @click="copyLink" class="py-2 px-4 bg-violet-700 rounded-lg font-bold text-white">Share Link</button>
-  </header>
   <section>
     <div class="container mx-auto">
       <div class="w-[400px] mx-auto flex flex-col items-center gap-4 bg-white px-4 py-8 rounded-xl mt-32">
