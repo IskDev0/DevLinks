@@ -5,7 +5,7 @@ import {storeToRefs} from "pinia";
 import linkColor from "~/utils/linkColor";
 
 definePageMeta({
-  layout: "NoHeader"
+  layout: "ho-header"
 })
 
 const linkStore = useLinkStore();

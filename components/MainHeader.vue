@@ -6,14 +6,15 @@ import {useRouter} from "vue-router";
 const user = useSupabaseUser()
 const router = useRouter()
 const linkStore = useLinkStore();
-const {links, filledLinks, showError} = storeToRefs(linkStore);
+const {links, filledLinks, showError, errorMessage} = storeToRefs(linkStore);
 
 function showPreview(): void {
   filledLinks.value = links.value.filter(link => link.href.trim() !== "")
-  showError.value = false
+  linkStore.closeError()
   if (links.value.length === filledLinks.value.length) {
     router.push("/preview")
   } else {
+    errorMessage.value = "Please fill all fields"
     showError.value = true
   }
 }
@@ -26,7 +27,9 @@ function showPreview(): void {
       <RouterLink to="/links">Links</RouterLink>
       <RouterLink to="/profile">Profile Details</RouterLink>
     </nav>
-    <button @click="showPreview" class="py-2 px-4 border-2 border-violet-700 rounded-lg font-bold text-violet-700">Preview</button>
+    <button @click="showPreview" class="py-2 px-4 border-2 border-violet-700 rounded-lg font-bold text-violet-700">
+      Preview
+    </button>
   </header>
 </template>
 

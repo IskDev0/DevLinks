@@ -13,7 +13,8 @@ const user = useSupabaseUser()
 
 const linkStore = useLinkStore()
 
-const {links, platformsList, filledLinks, showError} = storeToRefs(linkStore)
+const {links, platformsList, filledLinks, showError, errorMessage} = storeToRefs(linkStore)
+const {closeError} = linkStore
 
 function addLinks(): void {
   const availablePlatforms = getAvailablePlatforms();
@@ -36,6 +37,8 @@ async function uploadUserLinks(): Promise<void> {
 
   const filledLinksValue = filterFilledLinks(links.value);
 
+  errorMessage.value = ""
+
   if (filledLinksValue.length === links.value.length) {
     if (existingData?.length === 0) {
       await insertUserLinks();
@@ -43,6 +46,7 @@ async function uploadUserLinks(): Promise<void> {
       await updateUserLinks();
     }
   } else {
+    errorMessage.value = "Please fill all fields"
     showError.value = true;
   }
 }
@@ -107,12 +111,6 @@ function getLinkByPlatform(platform: string): string | undefined {
   return links.value.find(link => link.platform === platform)?.href;
 }
 
-
-function closeError(): void {
-  showError.value = false
-}
-
-
 onMounted(() => {
   loadUserPreviousLinks()
   loadUserPreviousDetails()
@@ -143,5 +141,5 @@ onMounted(() => {
       </div>
     </div>
   </section>
-  <ErrorMessage @close="closeError" v-if="showError"/>
+  <ErrorMessage :message="errorMessage" @close="closeError" v-if="showError"/>
 </template>

@@ -1,9 +1,17 @@
 <script setup lang="ts">
 import {useSupabaseClient} from "#imports";
+import Database from "~/utils/types/database";
+import {useLinkStore} from "~/stores/link";
+import {storeToRefs} from "pinia";
 
 definePageMeta({
-  layout: "NoHeader"
+  layout: "ho-header"
 })
+
+const linkStore = useLinkStore()
+const {showError, errorMessage} = storeToRefs(linkStore)
+
+const {closeError} = linkStore
 
 const showPassword = ref<boolean>(false)
 const showConfirmPassword = ref<boolean>(false)
@@ -20,16 +28,21 @@ const inputType = computed(() => showPassword.value ? 'text' : 'password')
 const confirmIconType = computed(() => showConfirmPassword.value ? 'mdi:eye-off' : 'mdi:eye')
 const confirmInputType = computed(() => showConfirmPassword.value ? 'text' : 'password')
 
-async function register() {
+async function register(): Promise<void> {
   if (password.value === confirmPassword.value) {
+    errorMessage.value = ""
+    showError.value = false
     try {
       const {data, error} = await supabase.auth.signUp({
         email: email.value,
         password: password.value,
       })
-      if (error) {
-        console.error(error)
+
+      if (error){
+        errorMessage.value = error.message
+        showError.value = true
       }
+
     }catch (error) {
       console.error(error)
     }
@@ -37,6 +50,7 @@ async function register() {
       await router.push("/links")
   }
 }
+
 </script>
 
 <template>
@@ -78,4 +92,5 @@ async function register() {
       <span class="block text-center mt-4">Already have an account? <RouterLink class="text-violet-700 font-semibold" to="/login">Sign In</RouterLink></span>
     </div>
   </section>
+  <ErrorMessage :message="errorMessage" @close="closeError" v-if="showError"/>
 </template>

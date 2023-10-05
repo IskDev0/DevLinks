@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import {useSupabaseClient} from "#imports";
 import Database from "~/utils/types/database";
+import {useLinkStore} from "~/stores/link";
+import {storeToRefs} from "pinia";
 
 definePageMeta({
-  layout: "NoHeader"
+  layout: "ho-header"
 })
+
+const linkStore = useLinkStore()
+const {showError, errorMessage} = storeToRefs(linkStore)
+const {closeError} = linkStore
 
 const showPassword = ref<boolean>(false)
 
@@ -17,14 +23,16 @@ const supabase = useSupabaseClient<Database>()
 const iconType = computed(() => showPassword.value ? 'mdi:eye-off' : 'mdi:eye')
 const inputType = computed(() => showPassword.value ? 'text' : 'password')
 
-async function signInWithEmail() {
+async function signInWithEmail(): Promise<void> {
   try {
+    closeError()
     const { data, error } = await supabase.auth.signInWithPassword({
       email: email.value,
       password: password.value,
     })
     if (error){
-      console.error(error)
+      errorMessage.value = error.message
+      showError.value = true
     }
 
   }catch (error) {
@@ -54,4 +62,5 @@ async function signInWithEmail() {
       <span class="block text-center mt-4">Don't have an account? <RouterLink class="text-violet-700 font-semibold" to="/register">Sign Up</RouterLink></span>
     </div>
   </section>
+  <ErrorMessage :message="errorMessage" @close="closeError" v-if="showError"/>
 </template>

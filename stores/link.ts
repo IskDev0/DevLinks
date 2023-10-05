@@ -30,7 +30,14 @@ export const useLinkStore = defineStore("links", () => {
 
     const showError = ref<boolean>(false)
 
+    const errorMessage = ref<string>("")
+
+    const closeError = ():void => {
+        showError.value = false
+        errorMessage.value = ""
+    }
+
     return {
-        links, platformsList, deleteItem, filledLinks, showError
+        links, platformsList, deleteItem, filledLinks, showError, errorMessage, closeError
     }
 })
