@@ -7,7 +7,14 @@ export const useUserStore = defineStore("user", () => {
     const email = ref<string>("")
     const image = ref<string>("")
 
+    const clearUserStore = ():void => {
+        firstName.value = ""
+        lastName.value = ""
+        email.value = ""
+        image.value = ""
+    }
+
     return {
-        firstName, lastName, email, image
+        firstName, lastName, email, image, clearUserStore
     }
 })
