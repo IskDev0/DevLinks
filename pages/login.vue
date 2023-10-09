@@ -9,7 +9,7 @@ definePageMeta({
 })
 
 const linkStore = useLinkStore()
-const {showError, errorMessage} = storeToRefs(linkStore)
+const {showError, errorMessage, isLoading} = storeToRefs(linkStore)
 const {closeError} = linkStore
 
 const showPassword = ref<boolean>(false)
@@ -24,6 +24,7 @@ const iconType = computed(() => showPassword.value ? 'mdi:eye-off' : 'mdi:eye')
 const inputType = computed(() => showPassword.value ? 'text' : 'password')
 
 async function signInWithEmail(): Promise<void> {
+  isLoading.value = true
   try {
     closeError()
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -38,7 +39,8 @@ async function signInWithEmail(): Promise<void> {
   }catch (error) {
     console.error(error)
   }
-  router.push("/links")
+  isLoading.value = false
+  await router.push("/links")
 }
 
 
@@ -63,4 +65,5 @@ async function signInWithEmail(): Promise<void> {
     </div>
   </section>
   <ErrorMessage :message="errorMessage" @close="closeError" v-if="showError"/>
+  <TheSpinner v-if="isLoading"/>
 </template>

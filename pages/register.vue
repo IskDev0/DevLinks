@@ -9,7 +9,7 @@ definePageMeta({
 })
 
 const linkStore = useLinkStore()
-const {showError, errorMessage} = storeToRefs(linkStore)
+const {showError, errorMessage, isLoading} = storeToRefs(linkStore)
 
 const {closeError} = linkStore
 
@@ -30,24 +30,28 @@ const confirmInputType = computed(() => showConfirmPassword.value ? 'text' : 'pa
 
 async function register(): Promise<void> {
   if (password.value === confirmPassword.value) {
-    errorMessage.value = ""
-    showError.value = false
+    closeError()
+    isLoading.value = true
     try {
       const {data, error} = await supabase.auth.signUp({
         email: email.value,
         password: password.value,
       })
 
-      if (error){
+      if (error) {
         errorMessage.value = error.message
         showError.value = true
       }
 
-    }catch (error) {
+    } catch (error) {
       console.error(error)
     }
 
-      await router.push("/links")
+    isLoading.value = false
+    await router.push("/links")
+  }else {
+    showError.value = true
+    errorMessage.value = "Passwords do not match"
   }
 }
 
@@ -89,8 +93,10 @@ async function register(): Promise<void> {
         <input class="py-2 px-4 bg-violet-700 text-white rounded-xl font-semibold cursor-pointer" type="submit"
                value="Create account">
       </form>
-      <span class="block text-center mt-4">Already have an account? <RouterLink class="text-violet-700 font-semibold" to="/login">Sign In</RouterLink></span>
+      <span class="block text-center mt-4">Already have an account? <RouterLink class="text-violet-700 font-semibold"
+                                                                                to="/login">Sign In</RouterLink></span>
     </div>
   </section>
   <ErrorMessage :message="errorMessage" @close="closeError" v-if="showError"/>
+  <TheSpinner v-if="isLoading"/>
 </template>

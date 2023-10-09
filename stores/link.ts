@@ -28,6 +28,8 @@ export const useLinkStore = defineStore("links", () => {
 
     const filledLinks = ref<LinkItemType[]>([])
 
+    const isLoading = ref<boolean>(false)
+
     const showError = ref<boolean>(false)
 
     const errorMessage = ref<string>("")
@@ -38,6 +40,6 @@ export const useLinkStore = defineStore("links", () => {
     }
 
     return {
-        links, platformsList, deleteItem, filledLinks, showError, errorMessage, closeError
+        links, platformsList, deleteItem, filledLinks, showError, errorMessage, closeError, isLoading
     }
 })

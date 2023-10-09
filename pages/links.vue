@@ -32,9 +32,7 @@ function getAvailablePlatforms(): string[] {
 async function uploadUserLinks(): Promise<void> {
 
   const existingData = await fetchUserLinks();
-
-  console.log(existingData)
-
+  
   const filledLinksValue = filterFilledLinks(links.value);
 
   errorMessage.value = ""
