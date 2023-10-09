@@ -4,9 +4,10 @@ import {useUserStore} from "~/stores/user";
 import Database from "~/utils/types/database";
 import {storeToRefs} from "pinia";
 import linkColor from "~/utils/linkColor";
+import ProfileShareSkeleton from "~/components/ProfileShareSkeleton.vue";
 
 definePageMeta({
-  layout: "NoHeader"
+  layout: "ho-header"
 })
 
 const supabase = useSupabaseClient<Database>()
@@ -18,9 +19,6 @@ const userStore = useUserStore()
 const {links} = storeToRefs(linkStore)
 const {firstName, lastName, image, email} = storeToRefs(userStore)
 
-// eeb9a147-3279-47a1-8c1c-0c01fbd41c60
-
-
 async function loadCurrentUserLinks(): Promise<void> {
   const {data, error} = await supabase
       .from('links')
@@ -28,19 +26,18 @@ async function loadCurrentUserLinks(): Promise<void> {
       .eq('userId', route.params.id)
       .single()
 
+  //@ts-ignore
   links.value = data
 
   if (data !== null) {
     let currentId = 1;
-    const outputArray = Object.entries(data)
+    links.value = Object.entries(data)
         .filter(([key, value]) => value !== null)
         .map(([key, value], index) => ({
           id: currentId + index,
           href: value,
           platform: key
-        }));
-
-    links.value = outputArray
+        }))
   } else {
     links.value = []
   }
@@ -69,7 +66,7 @@ onMounted(() => {
 <template>
   <section>
     <div class="container mx-auto">
-      <div class="w-[400px] mx-auto flex flex-col items-center gap-4 bg-white px-4 py-8 rounded-xl mt-32">
+      <div v-if="firstName && lastName && image && email" class="w-[400px] mx-auto flex flex-col items-center gap-4 bg-white px-4 py-8 rounded-xl mt-32">
         <div class="flex flex-col items-center">
           <img class="rounded-full w-32 h-32" :src="image ? image : '/placeholder.png'" alt="profile">
           <h1 class="text-xl font-bold mt-4">{{ firstName }} {{ lastName }}</h1>
@@ -88,6 +85,7 @@ onMounted(() => {
           </div>
         </TransitionGroup>
       </div>
+      <ProfileShareSkeleton v-else/>
     </div>
   </section>
 </template>

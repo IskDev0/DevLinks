@@ -10,7 +10,10 @@ const user = useSupabaseUser()
 
 const {firstName, lastName, image, email} = storeToRefs(userStore)
 
+const showNotification = ref<boolean>(false)
+
 async function uploadUserDetails() {
+  showNotification.value = true
   const existingData = await fetchUserDetails()
 
   if (existingData === null) {
@@ -18,6 +21,10 @@ async function uploadUserDetails() {
   } else {
     await updateUserDetails()
   }
+
+  setTimeout(() => {
+    showNotification.value = false
+  }, 1500)
 
 }
 
@@ -136,4 +143,26 @@ const imagePreview = computed(() => {
       <button @click="uploadUserDetails" class="text-white bg-purple-700 py-2 px-6 rounded-lg text-lg self-end">Save</button>
     </div>
   </div>
+  <Transition name="slide">
+  <div v-if="showNotification" class="flex items-center gap-2 fixed bottom-10 right-10 z-10 bg-violet-700 text-white py-2 px-4 rounded-xl">
+    <Icon name="mdi:content-save" width="24" height="24"/>
+    <p>Your data is saved</p>
+  </div>
+  </Transition>
 </template>
+
+<style scoped>
+.slide-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+}
+</style>

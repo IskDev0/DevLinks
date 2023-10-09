@@ -14,13 +14,19 @@ const user = useSupabaseUser()
 const {firstName, lastName, image, email} = storeToRefs(userStore)
 const {links} = storeToRefs(linkStore)
 
+const showCopyMessage = ref<boolean>(false)
+
 onMounted(() => {
   loadUserPreviousLinks()
   loadUserPreviousDetails()
 })
 
 async function copyLink() {
+  showCopyMessage.value = true
   await navigator.clipboard.writeText(`${window.location.origin}/share/${user.value?.id}`)
+  setTimeout(() => {
+    showCopyMessage.value = false
+  }, 1500)
 }
 </script>
 
@@ -54,4 +60,23 @@ async function copyLink() {
       </div>
     </div>
   </section>
+<Transition name="slide">
+  <div v-if="showCopyMessage" class="fixed left-0 right-0 bottom-1/4 bottom-0 text-center bg-white w-[200px] mx-auto py-2 px-8 font-bold rounded-xl text-violet-700">URL copied</div>
+</Transition>
 </template>
+
+<style scoped>
+.slide-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+}
+</style>
