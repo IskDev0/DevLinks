@@ -36,6 +36,7 @@ async function uploadUserLinks(): Promise<void> {
 
   try {
     isLoading.value = true
+    toggleScroll(true)
     const existingData = await fetchUserLinks();
 
     const filledLinksValue = filterFilledLinks(links.value);
@@ -57,6 +58,7 @@ async function uploadUserLinks(): Promise<void> {
     showError.value = true
   }
   isLoading.value = false
+  toggleScroll(false)
 }
 
 async function fetchUserLinks() {
@@ -141,6 +143,10 @@ onMounted(() => {
   loadUserPreviousLinks()
   loadUserPreviousDetails()
 })
+
+function toggleScroll(type:boolean): void {
+  type ? document.body.classList.add('overflow-hidden') : document.body.classList.remove('overflow-hidden')
+}
 
 
 </script>
