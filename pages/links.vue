@@ -5,6 +5,7 @@ import {useSupabaseUser} from "#imports";
 import Database from "~/utils/types/database";
 import LinkItemType from "~/utils/types/linkItemType";
 import loadUserPreviousLinks from "~/utils/loadUserPreviousLinks";
+import {useUserStore} from "~/stores/user";
 
 const router = useRouter()
 
@@ -12,8 +13,10 @@ const supabase = useSupabaseClient<Database>()
 const user = useSupabaseUser()
 
 const linkStore = useLinkStore()
+const userStore = useUserStore()
 
 const {links, platformsList, filledLinks, showError, errorMessage} = storeToRefs(linkStore)
+const {bgColor, textColor} = storeToRefs(userStore)
 const {closeError} = linkStore
 
 function addLinks(): void {
@@ -80,6 +83,13 @@ async function insertUserLinks(): Promise<void> {
       .from('links')
       .insert([linkData]);
 
+  const {data: colors} = await supabase
+      .from('userDetails')
+      .insert({
+        bgColor: bgColor.value,
+        textColor: textColor.value
+      })
+
   if (error) {
     throw error;
   }
@@ -99,6 +109,15 @@ async function updateUserLinks(): Promise<void> {
   const {data, error} = await supabase
       .from('links')
       .update(linkData)
+      .eq('userId', user.value?.id)
+      .select();
+
+  const {data:colors, error:errorColor} = await supabase
+      .from('userDetails')
+      .update({
+        bgColor: bgColor.value,
+        textColor: textColor.value
+      })
       .eq('userId', user.value?.id)
       .select();
 
@@ -130,6 +149,19 @@ onMounted(() => {
         <button @click="addLinks"
                 class="w-full py-2 px-4 border-2 border-purple-700 text-purple-700 font-bold rounded-lg">+ Add new link
         </button>
+        <div class="bg-[#eeeeee] rounded-xl p-4">
+          <h2 class="font-semibold text-xl text-gray-400 mb-4">Select colors</h2>
+          <div class="flex flex-col gap-4">
+          <label class="flex items-center gap-4 bg-white cursor-pointer" for="bgColor">
+            <input class="h-8 w-8" type="color" v-model="bgColor" id="bgColor">
+            <span>Background color</span>
+          </label>
+          <label class="flex items-center gap-4 bg-white cursor-pointer" for="textColor">
+            <input class="h-8 w-8" type="color" v-model="textColor" id="textColor">
+            <span>Text color</span>
+          </label>
+          </div>
+        </div>
         <LinksList :links="links"/>
         <div class="flex justify-end">
           <button @click="uploadUserLinks" class="mt-10 text-white bg-purple-700 py-2 px-6 rounded-lg text-lg self-end">

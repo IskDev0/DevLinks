@@ -9,7 +9,7 @@ async function getUserPreviousDetails() {
     const {data, error} = await
         supabase
             .from("userDetails")
-            .select("firstName, lastName, email, image")
+            .select("firstName, lastName, email, image, bgColor, textColor")
             .eq("userId", user.value?.id)
             .single()
 
