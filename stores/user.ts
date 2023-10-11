@@ -8,8 +8,9 @@ export const useUserStore = defineStore("user", () => {
     const image = ref<string>("")
     const bgColor = ref<string>("#ffffff")
     const textColor = ref<string>("#000000")
+    const cardColor = ref<string>("#ffffff")
 
-    const clearUserStore = ():void => {
+    const clearUserStore = (): void => {
         firstName.value = ""
         lastName.value = ""
         email.value = ""
@@ -17,6 +18,6 @@ export const useUserStore = defineStore("user", () => {
     }
 
     return {
-        firstName, lastName, email, image, clearUserStore, bgColor, textColor
+        firstName, lastName, email, image, clearUserStore, bgColor, textColor, cardColor
     }
 })

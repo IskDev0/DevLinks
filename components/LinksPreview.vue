@@ -8,7 +8,7 @@ import {storeToRefs} from "pinia";
 
 const userStore = useUserStore()
 
-const {firstName, lastName, image, email, bgColor, textColor} = storeToRefs(userStore)
+const {firstName, lastName, image, email, bgColor, textColor, cardColor} = storeToRefs(userStore)
 
 defineProps({
   links: {
@@ -28,7 +28,7 @@ defineProps({
         >
 
 
-        <div class="flex flex-col items-center absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 w-[calc(100%-100px)]">
+        <div :style="{backgroundColor: cardColor}" class="flex flex-col items-center absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/4 w-[calc(100%-100px)] py-4 rounded-xl">
           <img
               class="rounded-full w-32 h-32 mb-8"
               :src="image ? image : '/placeholder.png'"
@@ -41,7 +41,7 @@ defineProps({
             <span class="opacity-80">{{ email }}</span>
           </div>
 
-          <div class="flex flex-col gap-4 mt-10 overflow-x-hidden w-full">
+          <div class="flex flex-col gap-4 mt-5 overflow-x-hidden w-full py-5 rounded-xl">
             <TransitionGroup name="list">
               <div class="px-4" v-for="link in links" :key="link.id">
                 <div class="w-full flex items-center gap-2 py-2 px-4 rounded-lg border-[1px] border-white/50" :class="linkColor(link)">

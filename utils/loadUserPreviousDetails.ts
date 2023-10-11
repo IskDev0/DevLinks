@@ -6,7 +6,7 @@ async function loadUserPreviousDetails() {
 
     const userStore = useUserStore()
 
-    const {firstName, lastName, image, email, bgColor, textColor} = storeToRefs(userStore)
+    const {firstName, lastName, image, email, bgColor, textColor, cardColor} = storeToRefs(userStore)
 
     // @ts-ignore
     let previousData = await getUserPreviousDetails()
@@ -18,6 +18,7 @@ async function loadUserPreviousDetails() {
             email.value = previousData.email
             bgColor.value = previousData.bgColor
             textColor.value = previousData.textColor
+            cardColor.value = previousData.cardColor
 
         }else {
             firstName.value = ""
@@ -26,6 +27,7 @@ async function loadUserPreviousDetails() {
             email.value = ""
             bgColor.value = "#ffffff"
             textColor.value = "#000000"
+            cardColor.value = "#ffffff"
         }
 
 

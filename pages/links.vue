@@ -15,8 +15,8 @@ const user = useSupabaseUser()
 const linkStore = useLinkStore()
 const userStore = useUserStore()
 
-const {links, platformsList, filledLinks, showError, errorMessage} = storeToRefs(linkStore)
-const {bgColor, textColor} = storeToRefs(userStore)
+const {links, platformsList, filledLinks, showError, errorMessage, isLoading} = storeToRefs(linkStore)
+const {bgColor, textColor, cardColor} = storeToRefs(userStore)
 const {closeError} = linkStore
 
 function addLinks(): void {
@@ -34,22 +34,29 @@ function getAvailablePlatforms(): string[] {
 
 async function uploadUserLinks(): Promise<void> {
 
-  const existingData = await fetchUserLinks();
-  
-  const filledLinksValue = filterFilledLinks(links.value);
+  try {
+    isLoading.value = true
+    const existingData = await fetchUserLinks();
 
-  errorMessage.value = ""
+    const filledLinksValue = filterFilledLinks(links.value);
 
-  if (filledLinksValue.length === links.value.length) {
-    if (existingData?.length === 0) {
-      await insertUserLinks();
+    errorMessage.value = ""
+
+    if (filledLinksValue.length === links.value.length) {
+      if (existingData?.length === 0) {
+        await insertUserLinks();
+      } else {
+        await updateUserLinks();
+      }
     } else {
-      await updateUserLinks();
+      errorMessage.value = "Please fill all fields"
+      showError.value = true;
     }
-  } else {
-    errorMessage.value = "Please fill all fields"
-    showError.value = true;
+  } catch (error) {
+    errorMessage.value = error.message
+    showError.value = true
   }
+  isLoading.value = false
 }
 
 async function fetchUserLinks() {
@@ -87,7 +94,8 @@ async function insertUserLinks(): Promise<void> {
       .from('userDetails')
       .insert({
         bgColor: bgColor.value,
-        textColor: textColor.value
+        textColor: textColor.value,
+        cardColor: cardColor.value
       })
 
   if (error) {
@@ -112,11 +120,12 @@ async function updateUserLinks(): Promise<void> {
       .eq('userId', user.value?.id)
       .select();
 
-  const {data:colors, error:errorColor} = await supabase
+  const {data: colors, error: errorColor} = await supabase
       .from('userDetails')
       .update({
         bgColor: bgColor.value,
-        textColor: textColor.value
+        textColor: textColor.value,
+        cardColor: cardColor.value
       })
       .eq('userId', user.value?.id)
       .select();
@@ -149,17 +158,21 @@ onMounted(() => {
         <button @click="addLinks"
                 class="w-full py-2 px-4 border-2 border-purple-700 text-purple-700 font-bold rounded-lg">+ Add new link
         </button>
-        <div class="bg-[#eeeeee] rounded-xl p-4">
+        <div class="bg-[#eeeeee] rounded-xl p-4 mt-10">
           <h2 class="font-semibold text-xl text-gray-400 mb-4">Select colors</h2>
           <div class="flex flex-col gap-4">
-          <label class="flex items-center gap-4 bg-white cursor-pointer" for="bgColor">
-            <input class="h-8 w-8" type="color" v-model="bgColor" id="bgColor">
-            <span>Background color</span>
-          </label>
-          <label class="flex items-center gap-4 bg-white cursor-pointer" for="textColor">
-            <input class="h-8 w-8" type="color" v-model="textColor" id="textColor">
-            <span>Text color</span>
-          </label>
+            <label class="flex items-center gap-4 bg-white cursor-pointer" for="bgColor">
+              <input class="h-8 w-8" type="color" v-model="bgColor" id="bgColor">
+              <span>Background color</span>
+            </label>
+            <label class="flex items-center gap-4 bg-white cursor-pointer" for="textColor">
+              <input class="h-8 w-8" type="color" v-model="textColor" id="textColor">
+              <span>Text color</span>
+            </label>
+            <label class="flex items-center gap-4 bg-white cursor-pointer" for="cardColor">
+              <input class="h-8 w-8" type="color" v-model="cardColor" id="cardColor">
+              <span>Card color</span>
+            </label>
           </div>
         </div>
         <LinksList :links="links"/>
@@ -172,4 +185,5 @@ onMounted(() => {
     </div>
   </section>
   <ErrorMessage :message="errorMessage" @close="closeError" v-if="showError"/>
+  <TheSpinner v-if="isLoading"/>
 </template>
