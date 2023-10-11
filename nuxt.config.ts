@@ -5,7 +5,8 @@ export default defineNuxtConfig({
       "@nuxtjs/tailwindcss",
       "nuxt-headlessui",
       "@nuxtjs/supabase",
-      "nuxt-icon"
+      "nuxt-icon",
+      "nuxt-swiper"
   ],
     supabase: {
         redirect: false
