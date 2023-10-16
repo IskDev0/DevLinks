@@ -8,7 +8,7 @@ const userStore = useUserStore()
 const supabase = useSupabaseClient<Database>()
 const user = useSupabaseUser()
 
-const {firstName, lastName, image, email} = storeToRefs(userStore)
+const {firstName, lastName, image, email, bgColor, textColor, cardColor} = storeToRefs(userStore)
 
 const showNotification = ref<boolean>(false)
 
@@ -64,6 +64,16 @@ async function updateUserDetails() {
       })
       .eq('userId', user.value?.id)
       .select();
+
+  localStorage.setItem("userDetails", JSON.stringify({
+    firstName: firstName.value,
+    lastName: lastName.value,
+    image: image.value,
+    email: email.value,
+    bgColor: bgColor.value,
+    textColor: textColor.value,
+    cardColor: cardColor.value
+  }))
 }
 
 
