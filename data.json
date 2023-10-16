@@ -1,0 +1,58 @@
+{
+  "reviews": [
+    {
+      "id": 1,
+      "name": "Sebastian Perkins",
+      "image": "https://randomuser.me/api/portraits/men/45.jpg",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A doloribus enim et ex harum illo ipsa, itaque libero numquam quis quisquam sint, tenetur ullam. Similique."
+    },
+    {
+      "id": 2,
+      "name": "Yvonne Webb",
+      "image": "https://randomuser.me/api/portraits/women/46.jpg",
+      "text": "In pharetra nibh nec risus rhoncus vulputate. Nunc aliquet eleifend egestas. Nunc placerat pulvinar magna a congue. Nulla porta magna diam, ac hendrerit arcu facilisis nec. "
+    },
+    {
+      "id": 3,
+      "name": "Jayden Clark",
+      "image": "https://randomuser.me/api/portraits/men/47.jpg",
+      "text": "Nullam dictum velit congue magna venenatis vehicula. Integer elit diam, tempor non magna ac, dignissim pulvinar quam. Nullam eleifend mauris id sem lacinia, nec efficitur ex imperdiet. Pellentesque cursus lobortis vulputate. "
+    },
+    {
+      "id": 4,
+      "name": "Samantha Reed",
+      "image": "https://randomuser.me/api/portraits/women/49.jpg",
+      "text": "Quisque lectus felis, gravida faucibus eros condimentum, laoreet hendrerit mi. Aenean cursus felis sem, at fermentum nisl consectetur ac. Aliquam scelerisque aliquet ipsum, in vulputate erat. Morbi lobortis euismod metus sed varius."
+    },
+    {
+      "id": 5,
+      "name": "Jeff Reed",
+      "image": "https://randomuser.me/api/portraits/men/50.jpg",
+      "text": "Cras at malesuada nunc, in mollis ex. Praesent tempor justo est, sit amet feugiat leo consequat eget. Nullam sed viverra libero. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. "
+    },
+    {
+      "id": 6,
+      "name": "Sally Lawrence",
+      "image": "https://randomuser.me/api/portraits/women/51.jpg",
+      "text": "Morbi suscipit mi et elit ullamcorper molestie. Vivamus eu congue ipsum. Pellentesque ut dui sit amet enim ullamcorper facilisis et eget ipsum."
+    },
+    {
+      "id": 7,
+      "name": "Randy Dixon",
+      "image": "https://randomuser.me/api/portraits/men/52.jpg",
+      "text": "Vivamus tincidunt interdum tellus fringilla hendrerit. Maecenas at nisl quis odio sagittis iaculis. Vivamus vel velit ornare metus malesuada dapibus et sed urna. Vivamus mollis sapien a lacinia lacinia. "
+    },
+    {
+      "id": 8,
+      "name": "June Morgan",
+      "image": "https://randomuser.me/api/portraits/women/53.jpg",
+      "text": "Pellentesque at erat et ligula faucibus accumsan. Cras feugiat velit ac nisi dictum, a dignissim ex pharetra. Proin elementum eros eu mi blandit, ut accumsan leo sagittis. Cras ut consectetur eros. Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+    },
+    {
+      "id": 9,
+      "name": "Brayden Fisher",
+      "image": "https://randomuser.me/api/portraits/men/54.jpg",
+      "text": "Ut in velit porta, imperdiet mi ac, eleifend libero. Pellentesque ipsum purus, finibus vel orci eget, maximus pulvinar elit. Pellentesque non nulla odio."
+    }
+  ]
+}

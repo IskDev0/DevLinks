@@ -15,6 +15,9 @@ export const useUserStore = defineStore("user", () => {
         lastName.value = ""
         email.value = ""
         image.value = ""
+        bgColor.value = "#ffffff"
+        textColor.value = "#000000"
+        cardColor.value = "#ffffff"
     }
 
     return {

@@ -5,6 +5,10 @@
 </template>
 
 <style>
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: #eee;
 }
