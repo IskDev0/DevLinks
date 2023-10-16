@@ -4,9 +4,9 @@ import {storeToRefs} from "pinia";
 
 async function loadUserPreviousLinks() {
     const linkStore = useLinkStore()
+
     const {links} = storeToRefs(linkStore)
 
-    // @ts-ignore
     let previousData = await getUserPreviousLinks()
 
     if (Object.keys(previousData).length > 0 && previousData !== null) {
@@ -19,6 +19,9 @@ async function loadUserPreviousLinks() {
                 href: value,
                 platform: key
             }))
+
+        localStorage.setItem("links", JSON.stringify(links.value))
+
     } else {
         links.value = [
             {

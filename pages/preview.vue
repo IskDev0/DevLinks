@@ -3,6 +3,8 @@ import {useLinkStore} from "~/stores/link";
 import {useUserStore} from "~/stores/user";
 import {storeToRefs} from "pinia";
 import linkColor from "~/utils/linkColor";
+import loadUserPreviousLinks from "~/utils/loadUserPreviousLinks";
+import loadUserPreviousDetails from "~/utils/loadUserPreviousDetails";
 
 definePageMeta({
   layout: "no-header"
@@ -11,14 +13,30 @@ definePageMeta({
 const linkStore = useLinkStore();
 const userStore = useUserStore();
 const user = useSupabaseUser()
-const {firstName, lastName, image, email, bgColor, textColor} = storeToRefs(userStore)
+const {firstName, lastName, image, email, bgColor, textColor, cardColor} = storeToRefs(userStore)
 const {links} = storeToRefs(linkStore)
 
 const showCopyMessage = ref<boolean>(false)
 
 onMounted(() => {
-  loadUserPreviousLinks()
-  loadUserPreviousDetails()
+  const previousLinks = localStorage.getItem("links");
+  const previousUserDetails = localStorage.getItem("userDetails");
+
+  if (previousLinks != null && previousUserDetails != null) {
+    const userDetails = JSON.parse(previousUserDetails);
+
+    links.value = JSON.parse(previousLinks);
+    firstName.value = userDetails.firstName;
+    lastName.value = userDetails.lastName;
+    image.value = userDetails.image;
+    email.value = userDetails.email;
+    bgColor.value = userDetails.bgColor;
+    textColor.value = userDetails.textColor;
+    cardColor.value = userDetails.cardColor;
+  } else {
+    loadUserPreviousLinks();
+    loadUserPreviousDetails();
+  }
 })
 
 async function copyLink() {
@@ -37,8 +55,8 @@ async function copyLink() {
     </RouterLink>
     <button @click="copyLink" class="py-2 px-4 bg-violet-700 rounded-lg font-bold text-white">Share Link</button>
   </header>
-  <section class="h-screen flex flex-col items-center justify-center" :style="{backgroundColor: bgColor, textColor: textColor}">
-      <div class="w-[400px] mx-auto flex flex-col items-center gap-4 bg-white px-4 py-8 rounded-xl mt-32">
+  <section class="h-screen flex flex-col items-center justify-center" :style="{backgroundColor: bgColor, color: textColor}">
+      <div :style="{backgroundColor: cardColor}" class="w-[400px] mx-auto flex flex-col items-center gap-4 bg-white px-4 py-8 rounded-xl mt-32">
         <div class="flex flex-col items-center">
           <img class="rounded-full w-32 h-32" :src="image ? image : '/placeholder.png'" alt="profile">
           <h1 class="text-xl font-bold mt-4">{{ firstName }} {{ lastName }}</h1>

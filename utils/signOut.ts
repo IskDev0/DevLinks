@@ -12,6 +12,9 @@ async function signOut(){
 
     clearUserStore()
 
+    localStorage.removeItem("links")
+    localStorage.removeItem("userDetails")
+
     await supabase.auth.signOut()
 }
 

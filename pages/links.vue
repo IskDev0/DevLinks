@@ -16,7 +16,7 @@ const linkStore = useLinkStore()
 const userStore = useUserStore()
 
 const {links, platformsList, filledLinks, showError, errorMessage, isLoading} = storeToRefs(linkStore)
-const {bgColor, textColor, cardColor} = storeToRefs(userStore)
+const {firstName, lastName, image, email, bgColor, textColor, cardColor} = storeToRefs(userStore)
 const {closeError} = linkStore
 
 function addLinks(): void {
@@ -38,6 +38,7 @@ async function uploadUserLinks(): Promise<void> {
     isLoading.value = true
     toggleScroll(true)
     const existingData = await fetchUserLinks();
+    console.log(existingData)
 
     const filledLinksValue = filterFilledLinks(links.value);
 
@@ -49,6 +50,7 @@ async function uploadUserLinks(): Promise<void> {
       } else {
         await updateUserLinks();
       }
+
     } else {
       errorMessage.value = "Please fill all fields"
       showError.value = true;
@@ -122,6 +124,8 @@ async function updateUserLinks(): Promise<void> {
       .eq('userId', user.value?.id)
       .select();
 
+  localStorage.setItem("links", JSON.stringify(links.value))
+
   const {data: colors, error: errorColor} = await supabase
       .from('userDetails')
       .update({
@@ -132,6 +136,16 @@ async function updateUserLinks(): Promise<void> {
       .eq('userId', user.value?.id)
       .select();
 
+  localStorage.setItem("userDetails", JSON.stringify({
+    firstName: firstName.value,
+    lastName: lastName.value,
+    image: image.value,
+    email: email.value,
+    bgColor: bgColor.value,
+    textColor: textColor.value,
+    cardColor: cardColor.value
+  }))
+
   await router.push("/profile");
 }
 
@@ -140,11 +154,28 @@ function getLinkByPlatform(platform: string): string | undefined {
 }
 
 onMounted(() => {
-  loadUserPreviousLinks()
-  loadUserPreviousDetails()
+  const previousLinks = localStorage.getItem("links");
+  const previousUserDetails = localStorage.getItem("userDetails");
+
+  if (previousLinks != null && previousUserDetails != null) {
+    const userDetails = JSON.parse(previousUserDetails);
+
+    links.value = JSON.parse(previousLinks);
+    firstName.value = userDetails.firstName;
+    lastName.value = userDetails.lastName;
+    image.value = userDetails.image;
+    email.value = userDetails.email;
+    bgColor.value = userDetails.bgColor;
+    textColor.value = userDetails.textColor;
+    cardColor.value = userDetails.cardColor;
+  } else {
+    loadUserPreviousLinks();
+    loadUserPreviousDetails();
+  }
 })
 
-function toggleScroll(type:boolean): void {
+
+function toggleScroll(type: boolean): void {
   type ? document.body.classList.add('overflow-hidden') : document.body.classList.remove('overflow-hidden')
 }
 

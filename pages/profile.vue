@@ -3,14 +3,34 @@ import {useLinkStore} from "~/stores/link";
 import {storeToRefs} from "pinia";
 import loadUserPreviousLinks from "~/utils/loadUserPreviousLinks";
 import loadUserPreviousDetails from "~/utils/loadUserPreviousDetails";
+import {useUserStore} from "~/stores/user";
 
 const linkStore = useLinkStore();
+const userStore = useUserStore()
 
 const {links} = storeToRefs(linkStore)
 
+const {firstName, lastName, image, email, bgColor, textColor, cardColor} = storeToRefs(userStore)
+
 onMounted(() => {
-  loadUserPreviousLinks()
-  loadUserPreviousDetails()
+  const previousLinks = localStorage.getItem("links");
+  const previousUserDetails = localStorage.getItem("userDetails");
+
+  if (previousLinks != null && previousUserDetails != null) {
+    const userDetails = JSON.parse(previousUserDetails);
+
+    links.value = JSON.parse(previousLinks);
+    firstName.value = userDetails.firstName;
+    lastName.value = userDetails.lastName;
+    image.value = userDetails.image;
+    email.value = userDetails.email;
+    bgColor.value = userDetails.bgColor;
+    textColor.value = userDetails.textColor;
+    cardColor.value = userDetails.cardColor;
+  } else {
+    loadUserPreviousLinks();
+    loadUserPreviousDetails();
+  }
 })
 </script>
 
