@@ -47,8 +47,8 @@ async function signInWithEmail(): Promise<void> {
 </script>
 
 <template>
-  <section class="container mx-auto">
-    <div class="w-96 mx-auto mt-10">
+  <section class="w-96 mx-auto">
+    <div class="mt-10 mx-4">
       <h1 class="text-center font-bold text-3xl mb-10">Sign In</h1>
       <form @submit.prevent="signInWithEmail" class="flex flex-col gap-4">
         <div class="flex items-center gap-2 py-2 px-4 rounded-lg border-2 border-gray-300 bg-white">

@@ -145,12 +145,12 @@ const imagePreview = computed(() => {
 </script>
 
 <template>
-  <div class="w-2/3 bg-white py-8 px-6 rounded-xl">
+  <div class="w-full md:w-1/2 lg:w-2/3 bg-white py-8 px-6 rounded-xl">
     <h1 class="text-3xl font-bold">Profile Details</h1>
     <p class="text-gray-500 pt-4 pb-8">Add your details to create a personal touch to your profile.</p>
     <div class="flex flex-col gap-8 text-gray-500">
-      <div class="flex items-center justify-between bg-gray-100 rounded-xl p-4">
-        <h2>Profile picture</h2>
+      <div class="flex items-start gap-4 justify-between bg-gray-100 rounded-xl p-4 md:items-center">
+        <h2 class="hidden md:block">Profile picture</h2>
 
         <div class="h-40 w-40">
           <label

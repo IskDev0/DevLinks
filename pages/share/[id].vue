@@ -77,7 +77,7 @@ const hasData = computed(() => {
     <div class="container mx-auto">
       <div
           v-if="hasData"
-          class="w-[400px] mx-auto flex flex-col items-center gap-4 px-4 py-8 rounded-xl shadow-2xl"
+          class="w-[300px] max-w-[400px] mx-auto flex flex-col items-center gap-4 px-4 py-8 rounded-xl shadow-2xl"
           :style="{backgroundColor: cardColor}">
         <div class="flex flex-col items-center">
           <img class="rounded-full w-32 h-32" :src="image ? image : '/placeholder.png'" alt="profile">

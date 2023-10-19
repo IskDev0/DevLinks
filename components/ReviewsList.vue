@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import data from "~/data.json"
-import {Navigation} from 'swiper/modules';
+import {Pagination} from 'swiper/modules';
+
+const breakpoints = {
+  540: {
+    slidesPerView: 2,
+  },
+  1024: {
+    slidesPerView: 3,
+  }
+}
 
 const reviews = data.reviews
 </script>
@@ -8,11 +17,16 @@ const reviews = data.reviews
 <template>
   <section id="reviews" class="my-16">
     <h2 class="text-3xl font-bold text-center mb-10">Reviews</h2>
-    <Swiper :slidesPerView="3"
-            :spaceBetween="30"
-            :navigation="true"
-            :loop="true"
-            :modules="[Navigation]"
+    <Swiper
+        class="h-64"
+        :slidesPerView="1"
+        :spaceBetween="30"
+        :loop="true"
+        :breakpoints="breakpoints"
+        :modules="[Pagination]"
+        :pagination="{
+            dynamicBullets: true,
+        }"
     >
       <SwiperSlide v-for="review in reviews" :key="review.id">
         <ReviewItem :review="review"/>
@@ -22,8 +36,7 @@ const reviews = data.reviews
 </template>
 
 <style>
-.swiper-button-next,
-.swiper-button-prev {
-  color: #6d28d9 !important;
+.swiper-pagination-bullet-active {
+  background-color: #6d28d9 !important;
 }
 </style>

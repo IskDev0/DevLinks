@@ -184,11 +184,11 @@ function toggleScroll(type: boolean): void {
 
 <template>
   <section class="container mx-auto mt-10">
-    <div class="flex items-start gap-24">
-      <div class="w-1/3 h-screen">
+    <div class="flex items-start gap-8 md:gap-12 lg:gap-24">
+      <div class="hidden md:block md:w-1/2 lg:w-1/3 h-screen">
         <LinksPreview :links="links"/>
       </div>
-      <div class="w-2/3 bg-white py-8 px-6 rounded-xl">
+      <div class="w-full w-1/2 md:w-2/3 bg-white py-8 px-6 rounded-xl">
         <h1 class="text-3xl font-bold">Customize your links</h1>
         <p class="text-gray-500 pt-4 pb-8">Add/edit/remove links below and then share all your profiles with the
           world!</p>

@@ -21,15 +21,21 @@ function showPreview(): void {
 </script>
 
 <template>
-  <header class="flex items-center justify-between container mx-auto bg-white p-4 my-4 rounded-xl">
+  <header class="container mx-auto bg-white rounded-xl">
+    <div class="p-4 my-4 flex items-center justify-between">
     <RouterLink class="font-bold text-2xl" to="/">DevLinks</RouterLink>
-    <nav class="flex items-center gap-4 text-lg">
+    <nav class="hidden md:flex items-center gap-4 text-lg">
       <RouterLink to="/links">Links</RouterLink>
       <RouterLink to="/profile">Profile Details</RouterLink>
     </nav>
+      <nav class="flex items-center gap-4 text-lg md:hidden">
+        <RouterLink to="/links"><Icon name="mdi:link-variant"/></RouterLink>
+        <RouterLink to="/profile"><Icon name="mdi:account"/></RouterLink>
+      </nav>
     <button @click="showPreview" class="py-2 px-4 border-2 border-violet-700 rounded-lg font-bold text-violet-700">
       Preview
     </button>
+    </div>
   </header>
 </template>
 

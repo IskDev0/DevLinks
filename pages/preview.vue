@@ -49,14 +49,14 @@ async function copyLink() {
 </script>
 
 <template>
-  <header class="fixed top-0 left-0 right-0 flex items-center justify-between bg-white p-4 m-4 rounded-xl">
+  <header class="fixed top-0 left-0 right-0 flex items-center justify-between bg-white p-4 m-4 rounded-xl mx-4">
     <RouterLink class="py-2 px-4 border-2 border-violet-700 rounded-lg font-bold text-violet-700" to="/links">Back to
       Editor
     </RouterLink>
     <button @click="copyLink" class="py-2 px-4 bg-violet-700 rounded-lg font-bold text-white">Share Link</button>
   </header>
-  <section class="h-screen flex flex-col items-center justify-center" :style="{backgroundColor: bgColor, color: textColor}">
-      <div :style="{backgroundColor: cardColor}" class="w-[400px] mx-auto flex flex-col items-center gap-4 bg-white px-4 py-8 rounded-xl mt-32">
+  <section class="h-screen flex flex-col items-center justify-center px-4" :style="{backgroundColor: bgColor, color: textColor}">
+      <div :style="{backgroundColor: cardColor}" class="w-[300px] max-w-[400px] mx-auto flex flex-col items-center gap-4 bg-white px-4 py-8 rounded-xl mt-32">
         <div class="flex flex-col items-center">
           <img class="rounded-full w-32 h-32" :src="image ? image : '/placeholder.png'" alt="profile">
           <h1 class="text-xl font-bold mt-4">{{ firstName }} {{ lastName }}</h1>

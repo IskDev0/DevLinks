@@ -5,8 +5,8 @@ const user = useSupabaseUser()
 </script>
 
 <template>
-  <header class="py-4">
-    <div class="container mx-auto">
+  <header class="py-4 container mx-auto">
+    <div class="mx-4">
       <div class="flex items-center justify-between bg-white p-4 rounded-xl">
         <RouterLink class="font-bold text-2xl" to="/">DevLinks</RouterLink>
         <nav v-if="!user" class="flex items-center gap-4">

@@ -19,10 +19,10 @@ defineProps({
 
 <template>
     <div class="flex flex-col items-center">
-      <div class="relative w-[400px]" :style="{color: textColor}">
+      <div class="relative md:w-[300px] lg:w-[400px]" :style="{color: textColor}">
         <img
             :style="{backgroundColor: bgColor}"
-            class="h-[calc(100%-100px)] rounded-[60px]"
+            class="h-[calc(100%-100px)] rounded-[45px] lg:rounded-[60px]"
             src="/phone.png"
             alt="phone"
         >

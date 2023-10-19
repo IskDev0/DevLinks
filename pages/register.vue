@@ -58,8 +58,8 @@ async function register(): Promise<void> {
 </script>
 
 <template>
-  <section class="container mx-auto">
-    <div class="w-96 mx-auto mt-10">
+  <section class="w-96 mx-auto">
+    <div class="mt-10 mx-4">
       <h1 class="text-center font-bold text-3xl mb-10">Sign Up</h1>
       <form
           @submit.prevent="register"

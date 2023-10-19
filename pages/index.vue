@@ -1,16 +1,16 @@
 <template>
   <HomeHeader/>
-  <main class="container mx-auto">
+  <main class="container mx-auto px-4">
     <div class="bg-white p-5 rounded-xl mb-10">
-      <h1 class="text-4xl font-black text-center text-violet-700 mt-10">A simple way to combine all your links</h1>
-      <p class="text-2xl text-center w-2/3 mx-auto py-10">Devlinks is an amazingly user-friendly service designed for
+      <h1 class="text-2xl font-black text-center text-violet-700 mt-4 md:mt-10 md:text-4xl">A simple way to combine all your links</h1>
+      <p class="text-xl text-center mx-auto py-4 md:w-2/3 md:py-10 md:text-2xl">Devlinks is an amazingly user-friendly service designed for
         those who want to simplify access to their social networks, online portfolios, and other important resources. No
         endless profile updates or complicated bios. Simply create your own personalized Devlinks page and give your
         audience instant access to all your links.</p>
     </div>
     <section id="howItWorks" class="my-16">
       <h2 class="text-3xl font-bold text-center">How it works</h2>
-      <div class="grid grid-cols-3 gap-10 mt-10">
+      <div class="flex flex-col md:grid md:grid-cols-3 gap-10 mt-10">
         <article class="bg-white py-4 px-6 rounded-xl">
           <h3 class="flex items-center gap-2 font-bold text-xl"><span>1. Create your page</span>
             <Icon color="#6d28d9" name="mdi:account"/>
@@ -36,7 +36,7 @@
     </section>
     <section id="examples">
       <h2 class="text-3xl font-bold text-center mb-10">Examples</h2>
-    <div class="grid grid-cols-2 items-stretch gap-10">
+    <div class="flex flex-col md:grid md:grid-cols-2 items-stretch gap-10">
       <img class="rounded-xl" src="/preview-image.png" alt="preview image">
       <img class="rounded-xl" src="/preview-image2.png" alt="preview image">
       <img class="rounded-xl" src="/preview-image4.png" alt="preview image">
@@ -47,9 +47,9 @@
     <ReviewsList/>
     <FAQs/>
   </main>
-  <footer class="bg-zinc-800 py-10 mt-16">
+  <footer class="bg-zinc-800 py-10 mt-16 px-4">
     <div class="container mx-auto text-white">
-      <div class="flex justify-between gap-10">
+      <div class="flex flex-col md:flex-row justify-between gap-10">
         <div class="w-80">
           <RouterLink class="font-bold text-2xl" to="/">DevLinks</RouterLink>
           <p class="my-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, repudiandae!</p>
@@ -60,7 +60,7 @@
             <a href="https://linkedin.com"><Icon size="30" name="mdi:linkedin"/></a>
           </div>
         </div>
-        <div class="flex items-center justify-center">
+        <div class="flex items-center justify-start md:justify-center">
           <nav class="flex items-center gap-4">
             <a class="transition ease-in-out duration-200 hover:text-violet-700" href="#howItWorks">How It Works</a>
             <a class="transition ease-in-out duration-200 hover:text-violet-700" href="#examples">Examples</a>
