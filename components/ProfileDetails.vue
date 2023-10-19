@@ -76,16 +76,19 @@ async function updateUserDetails() {
   }))
 }
 
+function extractImageFromURL(){
+  return image.value.substring(image.value.lastIndexOf("/") + 1)
+}
 
 const imageUrl = ref<string>()
 const file = ref()
 const handleFileInputChange = async (e: { target: { files: any[]; }; }) => {
   file.value = e.target.files[0]
-  if (!file) return
+  if (!file.value) return
 
   const {data, error} = await supabase.storage
       .from('avatars')
-      .upload(`images/${file.value.name}`, file.value, {
+      .upload(`${user.value?.id}/${file.value.name}`, file.value, {
         cacheControl: '3600',
         upsert: true
       })
@@ -94,15 +97,45 @@ const handleFileInputChange = async (e: { target: { files: any[]; }; }) => {
     throw error
   }
 
+  const oldImage = extractImageFromURL()
+
+  const {error:removeError} = await supabase
+      .storage
+      .from('avatars')
+      .remove([`${user.value?.id}/${oldImage}`])
+
+  if (removeError){
+    console.error(error)
+  }
+
 
   const { data:imageURl } = supabase
       .storage
       .from('avatars')
-      .getPublicUrl(`images/${file.value.name}`)
+      .getPublicUrl(`${user.value?.id}/${file.value.name}`)
 
   image.value = imageURl.publicUrl
 
   imageUrl.value = URL.createObjectURL(file.value)
+
+  const {data:updateData, error:updateError} = await supabase
+      .from('userDetails')
+      .update({
+        image: image.value
+      })
+      .eq('userId', user.value?.id)
+      .select()
+
+
+  localStorage.setItem("userDetails", JSON.stringify({
+    firstName: firstName.value,
+    lastName: lastName.value,
+    image: image.value,
+    email: email.value,
+    bgColor: bgColor.value,
+    textColor: textColor.value,
+    cardColor: cardColor.value
+  }))
 }
 
 const imagePreview = computed(() => {
