@@ -54,6 +54,8 @@ async function deleteItem(index: number): Promise<void> {
 
   linkStore.deleteItem(index)
 
+  localStorage.setItem("links", JSON.stringify(links.value))
+
   const {data, error} = await supabase
       .from('links')
       .update(updateData)
@@ -62,11 +64,14 @@ async function deleteItem(index: number): Promise<void> {
 
 }
 
+async function handlePlatformChange(): Promise<void> {
+  localStorage.setItem("links", JSON.stringify(links.value))
+}
 </script>
 
 <template>
   <div class="flex flex-col gap-4 bg-[#eeeeee] p-4 rounded-xl">
-    <Listbox v-model="link!.platform">
+    <Listbox v-model="link!.platform" @update:modelValue="handlePlatformChange">
       <div class="relative mt-1">
         <div class="flex items-center justify-between mb-4">
           <h1 class="text-gray-400 font-semibold text-xl">Link #{{ index + 1 }}</h1>

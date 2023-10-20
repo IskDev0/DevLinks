@@ -8,7 +8,10 @@ import {useUserStore} from "~/stores/user";
 const linkStore = useLinkStore();
 const userStore = useUserStore()
 
-const {links} = storeToRefs(linkStore)
+const {links, errorMessage, showError} = storeToRefs(linkStore)
+
+const {closeError} = linkStore
+
 
 const {firstName, lastName, image, email, bgColor, textColor, cardColor} = storeToRefs(userStore)
 
@@ -41,4 +44,5 @@ onMounted(() => {
     </div>
     <ProfileDetails/>
   </section>
+  <ErrorMessage :message="errorMessage" @close="closeError" v-if="showError"/>
 </template>

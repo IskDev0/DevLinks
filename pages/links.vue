@@ -38,7 +38,6 @@ async function uploadUserLinks(): Promise<void> {
     isLoading.value = true
     toggleScroll(true)
     const existingData = await fetchUserLinks();
-    console.log(existingData)
 
     const filledLinksValue = filterFilledLinks(links.value);
 

@@ -11,10 +11,14 @@ const linkStore = useLinkStore();
 const {links, filledLinks, showError, errorMessage} = storeToRefs(linkStore);
 const {firstName, lastName, image, email, bgColor, textColor, cardColor} = storeToRefs(userStore)
 
+const isBioFilled = computed(() => {
+  return firstName.value !== "" && lastName.value !== "" && image.value !== "" && email.value !== ""
+})
+
 function showPreview(): void {
   filledLinks.value = links.value.filter(link => link.href.trim() !== "")
   linkStore.closeError()
-  if (links.value.length === filledLinks.value.length) {
+  if (links.value.length === filledLinks.value.length && isBioFilled.value) {
     router.push("/preview")
     localStorage.setItem("userDetails", JSON.stringify({
       firstName: firstName.value,
