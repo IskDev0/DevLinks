@@ -2,17 +2,29 @@
 import {useLinkStore} from "@/stores/link";
 import {storeToRefs} from "pinia";
 import {useRouter} from "vue-router";
+import {useUserStore} from "~/stores/user";
 
 const user = useSupabaseUser()
 const router = useRouter()
+const userStore = useUserStore()
 const linkStore = useLinkStore();
 const {links, filledLinks, showError, errorMessage} = storeToRefs(linkStore);
+const {firstName, lastName, image, email, bgColor, textColor, cardColor} = storeToRefs(userStore)
 
 function showPreview(): void {
   filledLinks.value = links.value.filter(link => link.href.trim() !== "")
   linkStore.closeError()
   if (links.value.length === filledLinks.value.length) {
     router.push("/preview")
+    localStorage.setItem("userDetails", JSON.stringify({
+      firstName: firstName.value,
+      lastName: lastName.value,
+      image: image.value,
+      email: email.value,
+      bgColor: bgColor.value,
+      textColor: textColor.value,
+      cardColor: cardColor.value
+    }))
   } else {
     errorMessage.value = "Please fill all fields"
     showError.value = true
@@ -32,9 +44,12 @@ function showPreview(): void {
         <RouterLink to="/links"><Icon name="mdi:link-variant"/></RouterLink>
         <RouterLink to="/profile"><Icon name="mdi:account"/></RouterLink>
       </nav>
-    <button @click="showPreview" class="py-2 px-4 border-2 border-violet-700 rounded-lg font-bold text-violet-700">
+    <button @click="showPreview" class="hidden py-2 px-4 border-2 border-violet-700 rounded-lg font-bold text-violet-700 md:block">
       Preview
     </button>
+      <button @click="showPreview" class="block py-2 px-4 border-2 border-violet-700 rounded-lg font-bold text-violet-700 md:hidden">
+        <Icon name="mdi:eye"/>
+      </button>
     </div>
   </header>
 </template>

@@ -30,8 +30,8 @@ async function loadUserPreviousDetails() {
         }))
 
     } else {
-        firstName.value = ""
-        lastName.value = ""
+        firstName.value = "First name"
+        lastName.value = "Last name"
         image.value = ""
         email.value = ""
         bgColor.value = "#ffffff"
