@@ -10,7 +10,7 @@ async function loadUserPreviousDetails() {
     // @ts-ignore
     let previousData = await getUserPreviousDetails()
 
-    if (previousData !== null) {
+    if (previousData) {
         firstName.value = previousData.firstName
         lastName.value = previousData.lastName
         image.value = previousData.image

@@ -6,17 +6,21 @@ async function getUserPreviousDetails() {
     const supabase = useSupabaseClient<Database>()
     const user = useSupabaseUser()
 
-    const {data, error} = await
-        supabase
-            .from("userDetails")
-            .select("firstName, lastName, email, image, bgColor, textColor, cardColor")
-            .eq("userId", user.value?.id)
-            .single()
+    try {
+        const {data, error} = await
+            supabase
+                .from("userDetails")
+                .select("firstName, lastName, email, image, bgColor, textColor, cardColor")
+                .eq("userId", user.value?.id)
+                .maybeSingle()
 
-    if (error) {
-        throw error;
-    } else {
-        return data
+        if (data){
+            return data
+        }else {
+            return null
+        }
+    }catch (error){
+        console.error(error)
     }
 }
 

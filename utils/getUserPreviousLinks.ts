@@ -9,7 +9,7 @@ async function getUserPreviousLinks() {
         .from("links")
         .select("GitHub, GitLab, LinkedIn, Twitter, Youtube")
         .eq("userId", user.value?.id)
-        .single()
+        .maybeSingle()
 
     if (data !== null) {
         return data
