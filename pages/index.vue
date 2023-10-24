@@ -86,6 +86,17 @@ definePageMeta({
   layout: "no-header"
 })
 
+useSeoMeta({
+  description: 'Devlinks is an amazingly user-friendly service designed for those who want to simplify access to their social networks, online portfolios, and other important resources.',
+  ogTitle: 'DevLinks',
+  ogDescription: 'Devlinks is an amazingly user-friendly service designed for those who want to simplify access to their social networks, online portfolios, and other important resources.',
+  ogImage: '/preview-image.png',
+  ogUrl: '/preview-image.png',
+  twitterTitle: 'DevLinks',
+  twitterDescription: 'Devlinks is an amazingly user-friendly service designed for those who want to simplify access to their social networks, online portfolios, and other important resources.',
+  twitterImage: '/preview-image.png',
+  twitterCard: 'summary'
+})
 
 </script>
 
