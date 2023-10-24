@@ -3,6 +3,8 @@ import {useSupabaseClient} from "#imports";
 import Database from "~/utils/types/database";
 import {useLinkStore} from "~/stores/link";
 import {storeToRefs} from "pinia";
+import signInWithGoogle from "~/utils/signInWithGoogle";
+import signInWithGithub from "~/utils/signInWithGithub";
 
 definePageMeta({
   layout: "ho-header"
@@ -93,6 +95,10 @@ async function register(): Promise<void> {
         <input class="py-2 px-4 bg-violet-700 text-white rounded-xl font-semibold cursor-pointer" type="submit"
                value="Create account">
       </form>
+      <div class="flex gap-4 mt-4">
+      <button class="bg-white py-3 rounded-xl flex justify-center gap-4 w-1/2" @click="signInWithGoogle"><Icon size="20" name="logos:google-icon"/></button>
+      <button class="bg-white py-3 rounded-xl flex justify-center gap-4 w-1/2" @click="signInWithGithub"><Icon size="20" name="logos:github-icon"/></button>
+      </div>
       <span class="block text-center mt-4">Already have an account? <RouterLink class="text-violet-700 font-semibold"
                                                                                 to="/login">Sign In</RouterLink></span>
     </div>
